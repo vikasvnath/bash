@@ -1,3 +1,5 @@
+###writing differnece to a file
+
 #!/usr/bin/env python3
 with open('/home/devops/http1.conf', 'r') as file1:
     with open('/home/devops/http2.conf', 'r') as file2:
@@ -6,3 +8,26 @@ with open('/home/devops/http1.conf', 'r') as file1:
         with open('diff.txt', 'w') as file_out:
          for line in difference:
             file_out.write(line)
+            
+######### only showing the lines in terminel
+            
+#!/usr/bin/env python3
+import difflib
+import sys
+
+with open('/home/devops/http1.conf', 'r') as hosts0:
+    with open('/home/devops/http2.conf', 'r') as hosts1:
+        diff = difflib.unified_diff(
+            hosts0.readlines(),
+            hosts1.readlines(),
+            fromfile='hosts0',
+            tofile='hosts1',
+            n=0,
+        )
+        for line in diff:
+            for prefix in ('---', '+++', '@@'):
+                if line.startswith(prefix):
+                    break
+            else:
+                sys.stdout.write(line[1:])
+
