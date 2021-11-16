@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+
+import subprocess
+di={}
+updated_version=[]
+#global variable
+commands=["rpm -qa | egrep 'HEB_Tomcat9|HEB_tomcat-'", "rpm -qa | grep OpenJDK11", "rpm -qa | grep -i HEB_newrelic_java", 'rpm -qa | grep -i HEB_newrelic_infra', 'rpm -qa | grep -i newrelic_infra' ]
+version=['HEB_Tomcat9-9.0.54-150.el7.centos.x86_64', 'HEB_OpenJDK11-11.52.14-93.el7.centos.x86_64', 'HEB_newrelic_java-8.3.0-107.el7.centos.noarch', 'HEB_newrelic_infra-0.1.20-41.el7.centos.noarch', 'HEB_newrelic_infra-0.1.20-41.el7.centos.noarch' ]
+#reading from file
+with open('readme.txt') as f:
+    hosts = f.readlines()
+
+
+
+#looping through file and sshing to server and executing command
+for hs in hosts:
+  di={}
+  print(hs.strip())
+  for v,command in zip(version,commands):
+     HOST=hs.strip()
+#sshing to server
+     ssh = subprocess.Popen(["ssh", HOST , command],
+                       shell=False,
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.PIPE)
+     result = ssh.stdout.readlines()
+     result= b''.join(result)
+     result=result.decode("utf-8")
+     result=str(result.strip())
+     #print(result)
+     if v==result:
+      print("{} is updated".format(result))
+
+     else:
+     # print("{} is not updated".format(result))
+      di['current_version']=result
+      di['updated_version']=v
+      updated_version.append(di)
+for i in updated_version:
+ print("This is current version: {}, Please update the version to:{}".format(i['current_version'],i['updated_version']))
