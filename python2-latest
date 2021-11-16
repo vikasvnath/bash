@@ -1,9 +1,10 @@
+#!/usr/bin/env python
 import subprocess
 di={}
 updated_version=[]
 #global variable
 commands=["rpm -qa | egrep 'HEB_Tomcat9|HEB_tomcat-'", "rpm -qa | grep OpenJDK11", "rpm -qa | grep -i HEB_newrelic_java", 'rpm -qa | grep -i HEB_newrelic_infra', 'rpm -qa | grep -i newrelic-infra' ]
-version=['HEB_Tomcat9-9.0.54-150.el7.centos.x86_64', 'HEB_OpenJDK11-11.52.14-93.el7.centos.x86_64', 'HEB_newrelic_java-8.3.0-107.el7.centos.noarch', 'HEB_newrelic_infra-0.1.20-41.el7.centos.noarch', 'newrelic-infra-1.20.5-1.el7.x86_64' ]
+version=['HEB_Tomcat9-10.0.54-150.el7.centos.x86_64', 'HEB_OpenJDK11-12.52.14-93.el7.centos.x86_64', 'HEB_newrelic_java-7.3.0-107.el7.centos.noarch', 'HEB_newrelic_infra-0.1.20-41.el7.centos.noarch', 'newrelic-infra-2.20.5-1.el7.x86_64' ]
 #reading from file
 with open('readme.txt') as f:
     hosts = f.readlines()
@@ -13,9 +14,9 @@ w=open('detail.txt','a')
 
 #looping through file and sshing to server and executing command
 for hs in hosts:
-  di={}
   w.write("Hostname:{}\n".format(hs.strip()))
   for v,command in zip(version,commands):
+     di={}
      HOST=hs.strip()
 #sshing to server
      ssh = subprocess.Popen(["ssh", HOST , command],
@@ -28,15 +29,16 @@ for hs in hosts:
      result=str(result.strip())
      #print(result)
      if v==result:
-      print("{} is updated".format(result))
+ #     print("{} is updated".format(result))
       w.write("{} is updated\n".format(result))
 
      else:
-     # print("{} is not updated".format(result))
+    #  print("{} is not updated".format(result))
       di['current_version']=result
       di['updated_version']=v
       updated_version.append(di)
 for i in updated_version:
- print("This is current version: {}, Please update the version to:{}".format(i['current_version'],i['updated_version']))
- w.write("This is current version: {}, Please update the version to:{}\n".format(i['current_version'],i['updated_version']))
-w.close()
+# print("This is current version: {}, Please update the version to:{}".format(i['current_version'],i['updated_version']))
+  w.write("This is current version: {}, Please update the version to:{}\n".format(i['current_version'],i['updated_version']))
+ w.close()
+                                                                                                                                
