@@ -1,0 +1,41 @@
+import subprocess
+
+#global variable
+commands=["rpm -qa | egrep 'HEB_Tomcat9|HEB_tomcat-'", "rpm -qa | grep OpenJDK11", "rpm -qa | grep -i HEB_newrelic_java", 'rpm -qa | grep -i HEB_newrelic_infra', 'rpm -qa | grep -i newrelic-infra' ]
+version=['HEB_Tomcat9-9.0.54-150.el7.centos.x86_64', 'HEB_OpenJDK11-11.52.14-93.el7.centos.x86_64', 'HEB_newrelic_java-7.3.0-107.el7.centos.noarch', 'HEB_newrelic_infra-0.1.20-41.el7.centos.noarch', 'newrelic-infra-1.20.5-1.el7.x86_64' ]
+#reading from file
+with open('readme.txt') as f:
+    hosts = f.readlines()
+
+
+
+#looping through file and sshing to server and executing command
+for host in hosts:
+    host=host.strip()
+    print("Server is :-",host)
+    i=0
+    for command in commands:
+#sshing to server
+            #print("Server is :-",host)
+            print("command is :-",command)
+            ssh = subprocess.Popen(["ssh", host , command],
+                       shell=False,
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.PIPE)
+            result = ssh.stdout.readlines()
+            result= b''.join(result)
+
+            result=result.decode("utf-8")
+            result=str(result.strip())
+            print(result)
+
+            #for var in vars:
+#condiiton check
+            if version[i] == result:
+                    print("expected")
+                    print('------------------------')
+            else:
+                    print("wrong")
+                    print('------------------------')
+            i+=1
+~
