@@ -1,0 +1,36 @@
+ #!/usr/bin/env python
+import subprocess
+#global variable
+commands=['rpm -qa | grep -i HEB_newrelic_infra', 'rpm -qa | grep -i newrelic-infra' ]
+version=['HEB_newrelic_infra-0.1.20-41.el7.centos.noarch', 'newrelic-infra-1.20.5-1.el7.x86_64' ]
+#reading from file
+with open('readme.txt') as f:
+    hosts = f.readlines()
+w=open('detail.txt','a')
+
+
+
+#looping through file and sshing to server and executing command
+for hs in hosts:
+  w.write("Hostname:{}\n".format(hs.strip()))
+  w.write("--------------------------------------------\n")
+  for v,command in zip(version,commands):
+     HOST=hs.strip()
+#sshing to server
+     ssh = subprocess.Popen(["ssh", HOST , command],
+                       shell=False,
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.PIPE)
+     result = ssh.stdout.readlines()
+     result= b''.join(result)
+     result=result.decode("utf-8")
+     result=str(result.strip())
+     if(not result):
+      w.write("Please check the server hostname or connection\n")
+      break
+     elif v==result:
+      w.write("{} is updated\n".format(result))
+     else:
+      w.write("{} is not updated\n".format(v))
+  w.write("--------------------------------------------\n\n")
+w.close()
