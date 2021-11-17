@@ -6,9 +6,8 @@ version=['HEB_newrelic_infra-0.1.20-41.el7.centos.noarch', 'newrelic-infra-1.20.
 #reading from file
 with open('readme.txt') as f:
    # hosts = f.readlines()
-   hosts = [line.rstrip() for line in f]
-   hosts = [ele for ele in hosts if ele.strip()]
-   print(hosts)
+   #hosts = [line.rstrip() for line in f]  (newline character is already striping in loop)
+   hosts = [ele for ele in f if ele.strip()]
 w=open('detail.txt','a')
 
 
