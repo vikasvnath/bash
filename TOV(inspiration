@@ -1,0 +1,7 @@
+files = open("grades.dat")
+request = open("requests.dat", "w")
+lists = files.readlines()
+grades = []
+
+for i in range(len(lists)):
+    grades.append(lists[i].rstrip('\n').split(',')) ############################## for removing space in list #################################
