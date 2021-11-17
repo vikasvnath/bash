@@ -32,14 +32,17 @@ for host,command in zip(hosts,commands):
     
     latest code ------------------------------------------------------------------------------------------------------------------------------------------------------
     
-    #!/usr/bin/env python
+  #!/usr/bin/env python
 import subprocess
 #global variable
-commands=["rpm -qa | egrep 'HEB_Tomcat9|HEB_tomcat-'", "rpm -qa | grep OpenJDK11", "rpm -qa | grep -i HEB_newrelic_java", 'rpm -qa | grep -i HEB_newrelic_infra', 'rpm -qa | grep -i newrelic-infra' ]
-version=['HEB_Tomcat9-9.0.54-150.el7.centos.x86_64', 'HEB_OpenJDK11-11.52.14-93.el7.centos.x86_64', 'HEB_newrelic_java-7.3.0-107.el7.centos.noarch', 'HEB_newrelic_infra-0.1.20-41.el7.centos.noarch', 'newrelic-infra-1.20.5-1.el7.x86_64' ]
+commands=['rpm -qa | grep -i HEB_newrelic_infra', 'rpm -qa | grep -i newrelic-infra' ]
+version=['HEB_newrelic_infra-0.1.20-41.el7.centos.noarch', 'newrelic-infra-1.20.5-1.el7.x86_64' ]
 #reading from file
 with open('readme.txt') as f:
     hosts = f.readlines()
+    i = 0
+    hosts = hosts[i].rstrip('\n').split(',')
+    print(hosts)
 w=open('detail.txt','a')
 
 
