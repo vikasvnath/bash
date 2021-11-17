@@ -5,7 +5,10 @@ commands=['rpm -qa | grep -i HEB_newrelic_infra', 'rpm -qa | grep -i newrelic-in
 version=['HEB_newrelic_infra-0.1.20-41.el7.centos.noarch', 'newrelic-infra-1.20.5-1.el7.x86_64' ]
 #reading from file
 with open('readme.txt') as f:
-    hosts = f.readlines()
+   # hosts = f.readlines()
+   hosts = [line.rstrip() for line in f]
+   hosts = [ele for ele in hosts if ele.strip()]
+   print(hosts)
 w=open('detail.txt','a')
 
 
