@@ -37,3 +37,7 @@ for hs in hosts:
      # w.write("{} is not updated\n".format(v))
   w.write("--------------------------------------------\n\n")
 w.close()
+
+
+### for oracle java : rpm -qa | grep  HEB_jre
+
